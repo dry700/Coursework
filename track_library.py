@@ -1,6 +1,9 @@
 from library_item import LibraryItem
-
-
+import os
+'''
+with open("_library.csv") as f:
+    contents = f.readlines()
+'''
 library = {}
 library["01"] = LibraryItem("Another Brick in the Wall", "Pink Floyd", 4)
 library["02"] = LibraryItem("Stayin' Alive", "Bee Gees", 5)
@@ -67,5 +70,22 @@ def increment_play_count(key):
 
 
 if __name__ == "__main__":
-    for key in library:
-        print(library[key].info())
+    csv_path = "_library.csv"
+
+    if not os.path.exists(csv_path):
+        print(f"File does not exist.")
+    else:
+        print(f"File exists.")
+
+    with open("_library.csv") as f:
+        contents = f.readlines()
+        contents.pop(0)
+        for i in range(len(contents)):
+            contents[i] = contents[i].strip().split(',')
+        print(contents)
+        for name,artist,rating in contents:
+            print(f'{name}\n{artist}\n{int(rating)}')
+            #item = LibraryItem()
+
+    '''for key in library:
+        print(library[key].info())'''
