@@ -75,7 +75,7 @@ def update_library():
 
 def read_library():
     library={}
-    with open("_library.csv") as f:
+    with open("_library.csv","w") as f:
         contents = f.readlines()
         tracks_detail = []
         for content in contents:
