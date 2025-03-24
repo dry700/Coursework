@@ -4,13 +4,14 @@ import os
 with open("_library.csv") as f:
     contents = f.readlines()
 '''
-library = {}
-library["01"] = LibraryItem("Another Brick in the Wall", "Pink Floyd", 4)
+
+
+"""library["01"] = LibraryItem("Another Brick in the Wall", "Pink Floyd", 4)
 library["02"] = LibraryItem("Stayin' Alive", "Bee Gees", 5)
 library["03"] = LibraryItem("Highway to Hell ", "AC/DC", 2)
 library["04"] = LibraryItem("Shape of You", "Ed Sheeran", 1)
 library["05"] = LibraryItem("Someone Like You", "Adele", 3)
-library["06"] = LibraryItem("Beat It","Micheal Jackson",5)
+library["06"] = LibraryItem("Beat It","Micheal Jackson",5)"""
 
 
 def list_all():
@@ -49,6 +50,7 @@ def set_rating(key, rating):
     try:
         item = library[key]
         item.rating = rating
+        update_library()
     except KeyError:
         return
 
@@ -65,27 +67,41 @@ def increment_play_count(key):
     try:
         item = library[key]
         item.play_count += 1
+        update_library()
     except KeyError:
         return
 
+def update_library():
+    f = open("_library.csv", "w")
+    for i in range(1, len(library) + 1):
+        f.write(f'{library["%02d" % i].name},{library["%02d" % i].artist},{library["%02d" % i].rating},'
+                f'{library["%02d" % i].play_count}\n')
 
-if __name__ == "__main__":
-    csv_path = "_library.csv"
-
-    if not os.path.exists(csv_path):
-        print(f"File does not exist.")
-    else:
-        print(f"File exists.")
-
+def read_library():
+    library={}
     with open("_library.csv") as f:
         contents = f.readlines()
-        contents.pop(0)
-        for i in range(len(contents)):
-            contents[i] = contents[i].strip().split(',')
-        print(contents)
-        for name,artist,rating in contents:
-            print(f'{name}\n{artist}\n{int(rating)}')
-            #item = LibraryItem()
+        tracks_detail = []
+        for content in contents:
+            tracks_detail.append(content.strip().split(','))
+        i = 1
+        for detail in tracks_detail:
+            try:
+                library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
+                library["%02d" % i].play_count = int(detail[3])
+                i+=1
+            except IndexError :
+                library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
+                i += 1
 
-    '''for key in library:
-        print(library[key].info())'''
+    return library
+
+library = read_library()
+
+if __name__ == "__main__":
+    read_library()
+    update_library()
+
+    print(library)
+    for key in library:
+        print(library[key].info())
