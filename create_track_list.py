@@ -63,7 +63,7 @@ class Create_track_list(tk.Tk):
         #avoid the non-number input
         try :
             songnum = int(self.song_number.get())
-        except:
+        except ValueError:
             self.lbl7.configure(text="Invalid number")
             return
 

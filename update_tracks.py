@@ -64,7 +64,7 @@ class Update_tracks(tk.Tk):
                 set_text(self.new_detail, track_details)  # track detail text display
             else:  # if track doesn't exist
                 set_text(self.new_detail, f"Track {key} not found")  # display track not found
-        except :
+        except ValueError:
             set_text(self.new_detail, "Invalid number input")
 
     def change_window(self):
