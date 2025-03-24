@@ -1,5 +1,4 @@
 from library_item import LibraryItem
-import os
 
 
 """library["01"] = LibraryItem("Another Brick in the Wall", "Pink Floyd", 4)
@@ -75,7 +74,7 @@ def update_library():
 
 def read_library():
     library={}
-    with open("_library.csv","w") as f:
+    with open("_library.csv") as f:
         contents = f.readlines()
         tracks_detail = []
         for content in contents:
@@ -86,7 +85,7 @@ def read_library():
                 if int(detail[2]) > 5:
                     library["%02d" % i] = LibraryItem(detail[0],detail[1],5)
                 elif int(detail[2]) < 0:
-                    library["%02d" % i] = LibraryItem(detail[0],detail[1],0)
+                    library["%02d" % i] = LibraryItem(detail[0],detail[1])
                 else:
                     library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
                 library["%02d" % i].play_count = int(detail[3])
@@ -95,7 +94,7 @@ def read_library():
                 library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
                 i += 1
             except ValueError:
-                library["%02d" % i] = LibraryItem(detail[0], detail[1], 0)
+                library["%02d" % i] = LibraryItem(detail[0], detail[1])
                 i += 1
 
     return library
