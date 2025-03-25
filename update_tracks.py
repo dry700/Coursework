@@ -44,16 +44,13 @@ class Update_tracks(tk.Tk):
                 set_text(self.new_detail, "Invalid rating input")
                 return
 
-        except :
+        except ValueError:
             set_text(self.new_detail, "Invalid rating input")
             return
 
         try:
             track_number = int(self.number_entry.get())
-            if track_number < 10:
-                key = f'0{track_number}'
-            else :
-                key = f"{track_number}"
+            key = "%02d" % track_number
             name = lib.get_name(key)
             lib.set_rating(key,new_rating)
             if name is not None:  # if track exist then

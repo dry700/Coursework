@@ -71,6 +71,7 @@ def update_library():
     for i in range(1, len(library) + 1):
         f.write(f'{library["%02d" % i].name},{library["%02d" % i].artist},{library["%02d" % i].rating},'
                 f'{library["%02d" % i].play_count}\n')
+    f.close()
 
 def read_library():
     library={}

@@ -16,8 +16,7 @@ class Create_track_list(tk.Tk):
         self.geometry("600x400")
         self.configure(bg="wheat")
 
-
-        self.play_list = []
+        self.play_list = self.read_list_file()
         self.detail = ""
 
         #Label to guide user
@@ -56,10 +55,9 @@ class Create_track_list(tk.Tk):
                                       ,background="red",foreground="white",font=("Helvetica", 15))
         self.reset_button.grid(row=4,column=5)
 
+        self.print_detail()
+
     def add_song(self):
-
-        tracks_detail = ''
-
         #avoid the non-number input
         try :
             songnum = int(self.song_number.get())
@@ -68,30 +66,53 @@ class Create_track_list(tk.Tk):
             return
 
         #check the validation of number and add song
-        if f'0{songnum}' in list(library) or f'{songnum}' in list(library):
-            if songnum<10: #If number lesser than 10 add a zero in-front of it. ex: 1 -> 01
-                self.play_list.append(f'0{songnum}')
-                self.lbl7.configure(text="Track added")
-            else: # if number have 2 or more digit, it will be untouched
-                self.play_list.append(f'{songnum}')
-                self.lbl7.configure(text="Track added")
+        if "%02d" % songnum in list(library) : #convert 1 digit number to 2 digits string
+            self.play_list.append("%02d" % songnum)
+            self.lbl7.configure(text="Track added")
 
-            for key in self.play_list:
-                name = lib.get_name(key)
-                artist = lib.get_artist(key)
-                play_count = lib.get_play_count(key)
-                tracks_detail += f"{name} - {artist}. Played: {play_count}\n"
-            self.detail = tracks_detail
+            self.print_detail()
         else:
             self.lbl7.configure(text="Song doesn't exist")
 
+        self.write_list_file()
+
         set_text(self.list_txt, self.detail)
 
+
+
     def play_tracks_list(self):
-        tracks_detail = ''
         for key in self.play_list:
             lib.increment_play_count(key)
+        self.print_detail()
 
+        set_text(self.list_txt, self.detail)
+
+    def reset_list(self):
+        self.play_list = []
+        self.detail = ""
+        set_text(self.list_txt,self.detail)
+        self.write_list_file()
+
+    def write_list_file(self):
+        f = open("_play_list.csv","w")
+        for track in self.play_list:
+            f.write(f'{track}\n')
+        f.close()
+
+    def read_list_file(self):
+        f = open("_play_list.csv")
+        contents = f.readlines()
+        try :
+            for i in range(len(contents)):
+                contents[i] = contents[i].strip()
+            f.close()
+            return contents
+        except IndexError:
+            f.close()
+            return []
+
+    def print_detail(self):
+        tracks_detail =''
         for key in self.play_list:
             name = lib.get_name(key)
             artist = lib.get_artist(key)
@@ -101,10 +122,7 @@ class Create_track_list(tk.Tk):
 
         set_text(self.list_txt, self.detail)
 
-    def reset_list(self):
-        self.play_list = []
-        self.detail = ""
-        set_text(self.list_txt,self.detail)
+
 
 
 if __name__=="__main__":
