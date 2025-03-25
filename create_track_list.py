@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.scrolledtext as tkst
-from library_item import LibraryItem
-import font_manager as fonts
+
 from track_library import library
 import track_library as lib
 
