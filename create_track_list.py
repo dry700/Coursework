@@ -122,8 +122,6 @@ class Create_track_list(tk.Tk):
         set_text(self.list_txt, self.detail)
 
 
-
-
 if __name__=="__main__":
     create_track_list = Create_track_list()
     create_track_list.mainloop()
