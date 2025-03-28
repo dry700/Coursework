@@ -67,45 +67,41 @@ def increment_play_count(key):
         return
 
 def update_library():
-    f = open("_library.csv", "w")
-    for i in range(1, len(library) + 1):
+    f = open("_library.csv", "w")#open file to write
+    for i in range(1, len(library) + 1): #write all track in library into file
         f.write(f'{library["%02d" % i].name},{library["%02d" % i].artist},{library["%02d" % i].rating},'
                 f'{library["%02d" % i].play_count}\n')
-    f.close()
+    f.close()#close file
 
 def read_library():
-    library={}
-    with open("_library.csv") as f:
-        contents = f.readlines()
-        tracks_detail = []
+    library={} #initiate track library
+    with open("_library.csv","r") as f: #open save file in readonly mode and auto close
+        contents = f.readlines() #read all track in file save
+        tracks_detail = [] #initiate detail list
         for content in contents:
-            tracks_detail.append(content.strip().split(','))
-        i = 1
+            tracks_detail.append(content.strip().split(','))#split detail texts into lists
+        i = 1 #start from first key in library
         for detail in tracks_detail:
-            try:
-                if int(detail[2]) > 5:
-                    library["%02d" % i] = LibraryItem(detail[0],detail[1],5)
-                elif int(detail[2]) < 0:
-                    library["%02d" % i] = LibraryItem(detail[0],detail[1])
-                else:
-                    library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
-                library["%02d" % i].play_count = int(detail[3])
-                i+=1
-            except IndexError :
-                library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))
-                i += 1
-            except ValueError:
-                library["%02d" % i] = LibraryItem(detail[0], detail[1])
-                i += 1
+            try: #avoid invalid rating and play count
+                if int(detail[2]) > 5:#if rating greater than 5
+                    library["%02d" % i] = LibraryItem(detail[0],detail[1],5)#add track with rating = 5
+                elif int(detail[2]) < 0: #if rating lesser than 0
+                    library["%02d" % i] = LibraryItem(detail[0],detail[1])#add track with rating = 0
+                else:#if rating is valid
+                    library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))#add track
+                library["%02d" % i].play_count = int(detail[3])#set play count
+                i+=1 #increase key index
+            except IndexError: #if there is no play count
+                library["%02d" % i] = LibraryItem(detail[0],detail[1],int(detail[2]))#add track playcount = 0
+                i += 1 #increase key index
+            except ValueError:#if there is no rating or play count
+                library["%02d" % i] = LibraryItem(detail[0], detail[1])#add track with playcount = 0 and rating = 0
+                i += 1 #increase key index
 
-    return library
+    return library #return the track library
 
-library = read_library()
+library = read_library() #initiate track library from save file
 
 if __name__ == "__main__":
     read_library()
     update_library()
-
-    print(library)
-    for key in library:
-        print(library[key].info())

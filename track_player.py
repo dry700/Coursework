@@ -32,6 +32,7 @@ class Track_player(tk.Tk):
                                            background="dark orange",foreground="cyan")
         self.update_tracks_btn.grid(row=1, column=2, padx=10, pady=10)
 
+        #status label
         self.status_lbl = tk.Label(self, bg='wheat', text="", font=("Helvetica", 10))
         self.status_lbl.grid(row=2, column=0, columnspan=3, padx=10, pady=10)
 

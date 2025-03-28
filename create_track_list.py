@@ -15,10 +15,12 @@ class Create_track_list(tk.Tk):
         self.geometry("600x400")
         self.configure(bg="wheat")
 
+        #initiate playlist by read save file
         self.play_list = self.read_list_file()
+        #set playlist detail text
         self.detail = ""
 
-        #Label to guide user
+        #Label title
         self.lbl1 = tk.Label(self,text="Create play list",font=("Arial",20,"bold"),bg="wheat")
         self.lbl1.grid(row=0,column=0,columnspan=10,sticky=tk.S)
 
@@ -50,77 +52,67 @@ class Create_track_list(tk.Tk):
                                   ,background="dark orange",foreground="cyan",font=("Helvetica", 15))
         self.play_btn.grid(row=5,column=5)
 
+        #reset list button
         self.reset_button = tk.Button(self,text="Reset list",command=self.reset_list
                                       ,background="red",foreground="white",font=("Helvetica", 15))
         self.reset_button.grid(row=4,column=5)
-
+        #write list on screen
         self.print_detail()
 
     def add_song(self):
         #avoid the non-number input
         try :
             songnum = int(self.song_number.get())
-        except ValueError:
-            self.lbl7.configure(text="Invalid number")
-            return
-
-        #check the validation of number and add song
-        if "%02d" % songnum in list(library) : #convert 1 digit number to 2 digits string
-            self.play_list.append("%02d" % songnum)
-            self.lbl7.configure(text="Track added")
-
-            self.print_detail()
-        else:
-            self.lbl7.configure(text="Song doesn't exist")
-
-        self.write_list_file()
-
-        set_text(self.list_txt, self.detail)
-
+            # check the validation of number and add song
+            if "%02d" % songnum in list(library):  # convert 1 digit number to 2 digits string key and check if track exist
+                self.play_list.append("%02d" % songnum) #add track key to playlist
+                self.lbl7.configure(text="Track added") #write confirm text
+                self.print_detail()#write all track in playlist on screen
+            else:
+                self.lbl7.configure(text="Song doesn't exist")#write status on screen
+            self.write_list_file()#write tracks key in playlist on save file
+            self.print_detail()#write playlist on scrolltext
+        except ValueError:#if non number input
+            self.lbl7.configure(text="Invalid number")#write error text on screen
 
 
     def play_tracks_list(self):
+        #increase play count of tracks in playlist
         for key in self.play_list:
             lib.increment_play_count(key)
-        self.print_detail()
-
-        set_text(self.list_txt, self.detail)
+        self.print_detail()#write playlist on scrolltext
 
     def reset_list(self):
-        self.play_list = []
-        self.detail = ""
-        set_text(self.list_txt,self.detail)
-        self.write_list_file()
+        self.play_list = [] #reset the list
+        self.detail = ""#reset the detail
+        self.write_list_file()#write playlist on scrolltext
 
     def write_list_file(self):
-        f = open("_play_list.csv","w")
+        f = open("_play_list.csv","w")#open and overwrite the file
         for track in self.play_list:
-            f.write(f'{track}\n')
-        f.close()
+            f.write(f'{track},')#write keys in playlist on save file
+        f.close()#close file
 
     def read_list_file(self):
-        f = open("_play_list.csv")
-        contents = f.readlines()
-        try :
-            for i in range(len(contents)):
-                contents[i] = contents[i].strip()
-            f.close()
-            return contents
-        except IndexError:
-            f.close()
-            return []
+        f = open("_play_list.csv",'r')#open file in readonly mode
+        contents = f.read()#read all tracks key as string
+        if contents == '':#if string is empty
+            f.close()#close file
+            return [] #return empty list
+        else:
+            contents = contents.split(',') #convert string into list
+            f.close()#close file
+            return contents #return key list
 
     def print_detail(self):
-        tracks_detail =''
-        for key in self.play_list:
-            name = lib.get_name(key)
-            artist = lib.get_artist(key)
-            play_count = lib.get_play_count(key)
-            tracks_detail += f"{name} - {artist}. Played: {play_count}\n"
-        self.detail = tracks_detail
-
-        set_text(self.list_txt, self.detail)
-
+        tracks_detail ='' #initiate write content
+        for key in self.play_list: #get tracks detail
+            name = lib.get_name(key) #get track name
+            artist = lib.get_artist(key) #get track artist
+            play_count = lib.get_play_count(key) #get play count
+            tracks_detail += f"{name} - {artist}. Played: {play_count}\n" #add track detail to print content
+        self.detail = tracks_detail #set writen content on scroll text
+        set_text(self.list_txt, self.detail)#write content on scroll text
 
 if __name__=="__main__":
     create_track_list = Create_track_list()
