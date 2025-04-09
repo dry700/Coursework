@@ -34,7 +34,7 @@ class Update_tracks(tk.Tk):
         self.rating_entry.grid(row=1, column=3, sticky=tk.W)
 
         #update confirm button
-        self.update_track_btn = tk.Button(self,text="Update track",font=("Helvetica", 10),bg="dark orange",fg="cyan"
+        self.update_track_btn = tk.Button(self,text="Update track",font=("Helvetica", 10),bg="dark orange",fg="white"
                                         ,command=self.update_track)
         self.update_track_btn.grid(row=1,column=5,sticky=tk.SW)
 

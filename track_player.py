@@ -8,28 +8,28 @@ class Track_player(tk.Tk):
     def __init__(self):
         super().__init__()
         self.geometry("520x150")
-        self.title("Omni-player")
+        self.title("Omniplayer")
         self.configure(bg="wheat")
 
         fonts.configure()
 
         #header label
-        self.header_lbl = tk.Label(self, text="Select an option by clicking one of the buttons below")
+        self.header_lbl = tk.Label(self, text="Omniplayer",font=("Helvetica",25,"bold"),fg="black",bg="wheat")
         self.header_lbl.grid(row=0, column=0, columnspan=3, padx=10, pady=10)
 
         #view track button
         self.view_tracks_btn = tk.Button(self, text="View Tracks", command=self.view_tracks_clicked,
-                                         background="dark orange",foreground="cyan")
+                                         background="dark orange",foreground="white")
         self.view_tracks_btn.grid(row=1, column=0, padx=10, pady=10)
 
         #create track button
         self.create_track_list_btn = tk.Button(self, text="Create Track List",command=self.create_track_list,
-                                               background="dark orange",foreground="cyan")
+                                               background="dark orange",foreground="white")
         self.create_track_list_btn.grid(row=1, column=1, padx=10, pady=10)
 
         #update track button
         self.update_tracks_btn = tk.Button(self, text="Update Tracks",command=self.update_tracks_clicked,
-                                           background="dark orange",foreground="cyan")
+                                           background="dark orange",foreground="white")
         self.update_tracks_btn.grid(row=1, column=2, padx=10, pady=10)
 
         #status label

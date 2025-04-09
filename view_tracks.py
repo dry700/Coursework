@@ -18,7 +18,7 @@ class TrackViewer(): #create view track class
 
         #list track button
         list_tracks_btn = tk.Button(window, text="List All Tracks", command=self.list_tracks_clicked
-                                    ,background="dark orange",foreground="cyan")
+                                    ,background="dark orange",foreground="white")
         list_tracks_btn.grid(row=0, column=0, padx=10, pady=10)
 
         #song number input label and entry
@@ -29,7 +29,7 @@ class TrackViewer(): #create view track class
 
         #check track button
         check_track_btn = tk.Button(window, text="View Track", command=self.view_tracks_clicked
-                                    ,background="dark orange",foreground="cyan")
+                                    ,background="dark orange",foreground="white")
         check_track_btn.grid(row=0, column=3, padx=10, pady=10)
 
         #scroll text to display tracks list

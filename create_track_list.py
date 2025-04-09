@@ -32,7 +32,7 @@ class Create_track_list(tk.Tk):
 
         #Song add button
         self.add_btn = tk.Button(self, text="Add song",command=self.add_song,
-                                 background="dark orange",foreground="cyan",font=("Helvetica", 15))
+                                 background="dark orange",foreground="white",font=("Helvetica", 15))
         self.add_btn.grid(row=1, column=5,columnspan=2, sticky=tk.SE)
 
         #Track list label
@@ -49,7 +49,7 @@ class Create_track_list(tk.Tk):
 
         #play all tracks
         self.play_btn = tk.Button(self,text="Play",command=self.play_tracks_list
-                                  ,background="dark orange",foreground="cyan",font=("Helvetica", 15))
+                                  ,background="dark orange",foreground="white",font=("Helvetica", 15))
         self.play_btn.grid(row=5,column=5)
 
         #reset list button
@@ -67,7 +67,7 @@ class Create_track_list(tk.Tk):
             if "%02d" % songnum in list(library):  # convert 1 digit number to 2 digits string key and check if track exist
                 self.play_list.append("%02d" % songnum) #add track key to playlist
                 self.lbl7.configure(text="Track added") #write confirm text
-                self.print_detail()#write all track in playlist on screen
+                #self.print_detail()#write all track in playlist on screen
             else:
                 self.lbl7.configure(text="Song doesn't exist")#write status on screen
             self.write_list_file()#write tracks key in playlist on save file
@@ -86,6 +86,7 @@ class Create_track_list(tk.Tk):
         self.play_list = [] #reset the list
         self.detail = ""#reset the detail
         self.write_list_file()#write playlist on scrolltext
+        self.print_detail()
 
     def write_list_file(self):
         f = open("_play_list.csv","w")#open and overwrite the file
@@ -102,6 +103,8 @@ class Create_track_list(tk.Tk):
         else:
             contents = contents.split(',') #convert string into list
             f.close()#close file
+            if contents[len(contents)-1] == '':
+                contents.pop(len(contents)-1)
             return contents #return key list
 
     def print_detail(self):

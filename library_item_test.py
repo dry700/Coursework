@@ -1,50 +1,33 @@
 from library_item import LibraryItem
 
-test_item_1 = LibraryItem("Beat It", "Micheal Jackson", 5)
-test_item_2 = LibraryItem("06 Quen Lam","Ngot",4)
-test_item_3 = LibraryItem("02 Mo Lam Ma","Ngot",3)
-test_item_4 = LibraryItem("Devourer of Gods","DM DOKURO",4)
+test_items = []
+test_items.append({"name":"Beat It", "artist":"Micheal Jackson", "rating":5})
+test_items.append({"name":"06 Quen Lam","artist":"Ngot","rating":4})
+test_items.append({"name":"02 Mo Lam Ma","artist":"Ngot","rating":3})
+test_items.append({"name":"Devourer of Gods","artist":"DM DOKURO","rating":4})
 
-def test_name():
-    assert test_item_1.name == "Beat It"
-    assert test_item_2.name == "06 Quen Lam"
-    assert test_item_3.name == "02 Mo Lam Ma"
-    assert test_item_4.name == "Devourer of Gods"
-
-def test_artist():
-    assert test_item_1.artist == "Micheal Jackson"
-    assert test_item_2.artist == "Ngot"
-    assert test_item_3.artist == "Ngot"
-    assert test_item_4.artist == "DM DOKURO"
-
-def test_rating():
-    assert test_item_1.rating == 5
-    assert test_item_2.rating == 4
-    assert test_item_3.rating == 3
-    assert test_item_4.rating == 4
+def test_init():
+    for item in test_items:
+        testing_item = LibraryItem(item["name"],item["artist"],item["rating"])
+        assert testing_item.name == item["name"]
+        assert testing_item.artist == item["artist"]
+        assert testing_item.rating == item["rating"]
+        assert testing_item.play_count ==0
 
 def test_info():
-    assert test_item_1.info() == "Beat It - Micheal Jackson *****"
-    assert test_item_2.info() == "06 Quen Lam - Ngot ****"
-    assert test_item_3.info() == "02 Mo Lam Ma - Ngot ***"
-    assert test_item_4.info() == "Devourer of Gods - DM DOKURO ****"
+    for item in test_items:
+        testing_item = LibraryItem(item["name"],item["artist"],item["rating"])
+        assert testing_item.info() == f"{item["name"]} - {item["artist"]} {testing_item.stars()}"
 
-def test_star():
-    assert test_item_1.stars() == "*****"
-    assert test_item_2.stars() == "****"
-    assert test_item_3.stars() == "***"
-    assert test_item_4.stars() == "****"
-
-def test_play_count():
-    assert test_item_1.play_count == 0
-    assert test_item_2.play_count == 0
-    assert test_item_3.play_count == 0
-    assert test_item_4.play_count == 0
+def test_stars():
+    for item in test_items:
+        testing_item = LibraryItem(item["name"],item["artist"],item["rating"])
+        expected_star = ''
+        for i in range(item['rating']):
+            expected_star += '*'
+        assert testing_item.stars() == expected_star
 
 if __name__ == "__main__":
-    test_name()
-    test_artist()
-    test_rating()
-    test_play_count()
-    test_star()
+    test_init()
     test_info()
+    test_stars()
