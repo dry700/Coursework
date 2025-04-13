@@ -63,9 +63,10 @@ class Create_track_list(tk.Tk):
         #avoid the non-number input
         try :
             songnum = int(self.song_number.get())
+            key = "%02d" % songnum # convert 1 digit number to 2 digits string key
             # check the validation of number and add song
-            if "%02d" % songnum in list(library):  # convert 1 digit number to 2 digits string key and check if track exist
-                self.play_list.append("%02d" % songnum) #add track key to playlist
+            if key in list(library):  #check if track exist
+                self.play_list.append(key) #add track key to playlist
                 self.lbl7.configure(text="Track added") #write confirm text
                 #self.print_detail()#write all track in playlist on screen
             else:
@@ -73,7 +74,7 @@ class Create_track_list(tk.Tk):
             self.write_list_file()#write tracks key in playlist on save file
             self.print_detail()#write playlist on scrolltext
         except ValueError:#if non number input
-            self.lbl7.configure(text="Invalid number")#write error text on screen
+            self.lbl7.configure(text="Invalid input")#write error text on screen
 
 
     def play_tracks_list(self):
@@ -87,6 +88,7 @@ class Create_track_list(tk.Tk):
         self.detail = ""#reset the detail
         self.write_list_file()#write playlist on scrolltext
         self.print_detail()
+        self.lbl7.configure(text="List reset")  # write error text on screen
 
     def write_list_file(self):
         f = open("_play_list.csv","w")#open and overwrite the file
