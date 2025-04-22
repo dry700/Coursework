@@ -7,7 +7,7 @@ from update_tracks import Update_tracks
 class Track_player(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.geometry("520x150")
+        self.geometry("520x170")
         self.title("Omniplayer")
         self.configure(bg="wheat")
 
